@@ -50,21 +50,29 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 	  unsigned char data[XTCP_CLIENT_BUF_SIZE] = {'h', 'e', 'l', 'l', 'o'};
 	  int len;
 	  int rem_port = 8008;
+	  int sendloop = 1;
 	  timer tmr;
-	  unsigned t;
+	  unsigned t,tt;
 	  unsigned ledOn = 1;
 
       x0ledB <: ledOn;  /* toggle the LED */
       ledOn = !ledOn;
 
 while (1){
-	  xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
+	  sendloop = 1;
+      tmr :> tt;
+      tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
+
+      xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
 	  //xtcp_bind_remote(tcp_svr, conn, host, rem_port);
 
-	  //httpd_init();
-	//  xtcp_listen(tcp_svr, 80, XTCP_PROTOCOL_TCP);
+      tmr :> tt;
+      tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
+
 	  xtcp_ask_for_event(tcp_svr);
-	  while(1) {
+	  while(sendloop) {
+          tmr :> tt;
+          tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
 	    select
 	      {
 	      case xtcp_event(tcp_svr, conn):
@@ -72,8 +80,6 @@ while (1){
 	               case XTCP_NEW_CONNECTION:
 	                  printstr("XTCP_NEW_CONNECTION\n");
 	                  //httpd_init_state(tcp_svr, conn);
-// 	                  printstr("connection %d %d %d %d %d   proto=%d\n", conn.accepted, conn.id, conn.local_port,
-//	                                                                  conn.protocol, conn.remote_port, conn.protocol);
 	                  xtcp_init_send(tcp_svr, conn);
 	                  break;
 	               case XTCP_RECV_DATA:
@@ -105,10 +111,12 @@ while (1){
 	               case XTCP_TIMED_OUT:
 		                  printstr("XTCP_TIMED_OUT\n");
 		                  //httpd_free_state(conn);
+		                  sendloop=0;
 		                  break;
 	               case XTCP_ABORTED:
 		                  printstr("XTCP_ABORTED\n");
 		                  //httpd_free_state(conn);
+		                  sendloop=0;
 		                  break;
 	               case XTCP_CLOSED:
 	                  printstr("XTCP_CLOSED\n");
