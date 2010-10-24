@@ -42,7 +42,7 @@ void xhttpd(chanend tcp_svr, port x0ledB)
   }
   */
 #define DELAY  (_CLOCKS_PER_SEC_/2)
-#define PAUSE_A (_CLOCKS_PER_SEC_ * 2)
+#define PAUSE_A (_CLOCKS_PER_SEC_ * 1)
 #define DATA_LEN 500
 
 	  xtcp_connection_t conn;
