@@ -216,9 +216,12 @@
           .byte     0x6f
           .space    795
 .cc_bottom .LC1.data
+.call xhttpd, __builtin_timer_after
 .call xhttpd, xtcp_connect
+.call xhttpd, __builtin_timer_after
 .call xhttpd, xtcp_ask_for_event
-.assert 1, xtcp_event.actnochandec, ".././src/xhttpd.xc:70: error: call to function `xtcp_event' which declares a channel from within a transaction statement"
+.call xhttpd, __builtin_timer_after
+.assert 1, xtcp_event.actnochandec, ".././src/xhttpd.xc:78: error: call to function `xtcp_event' which declares a channel from within a transaction statement"
 .call xhttpd, xtcp_event
 .call xhttpd, printstr
           .align    4
@@ -316,13 +319,13 @@
 .linkset .LLNK3, .LLNK4 $M printstr.nstackwords
 .linkset .LLNK2, .LLNK3 $M xtcp_ask_for_event.nstackwords
 .linkset .LLNK1, .LLNK2 $M .LLNK2
-.linkset .LLNK0, .LLNK1 + 220
+.linkset .LLNK0, .LLNK1 + 222
 .linkset xhttpd.nstackwords, .LLNK0
-.LDBG99:
+.LDBG102:
 .LDBG8:
 xhttpd:
-          entsp     0xdc 
-.LDBG100:
+          entsp     0xde 
+.LDBG103:
           stw       r0, sp[0x1] 
           stw       r1, sp[0x2] 
           .file     1 ".././src/xhttpd.xc"
@@ -334,591 +337,704 @@ xhttpd:
           ldaw      r0, sp[0xe] 
           ldaw      r1, dp[.LC0] 
           ldc       r2, 0x4
-.L69:
+.L79:
           bl        __crt_memcpy 
           .loc      1 50 0
 
           ldaw      r0, sp[0xf] 
           ldaw      r1, dp[.LC1] 
           ldc       r2, 0x320
-.L70:
+.L80:
           bl        __crt_memcpy 
           .loc      1 52 0
 
 .L0:
           ldc       r0, 0x1f48
           stw       r0, sp[0xd8] 
-          getr      r0, 0x1
-          stw       r0, sp[0xd9] 
-          .loc      1 55 0
+          .loc      1 53 0
 
 .L1:
           mkmsk     r0, 0x1
-          stw       r0, sp[0xdb] 
+          stw       r0, sp[0xd9] 
+          getr      r0, 0x1
+          stw       r0, sp[0xda] 
+          .loc      1 56 0
+
 .L2:
-          .loc      1 57 0
-
-          ldw       r1, sp[0x2] 
-          ldw       r0, sp[0xdb] 
-.L71:
-          out       res[r1], r0 
-          .loc      1 58 0
-
+          mkmsk     r0, 0x1
+          stw       r0, sp[0xdd] 
 .L3:
           .loc      1 58 0
 
-          ldw       r0, sp[0xdb] 
+          ldw       r1, sp[0x2] 
+          ldw       r0, sp[0xdd] 
+.L81:
+          out       res[r1], r0 
+          .loc      1 59 0
+
+.L4:
+          .loc      1 59 0
+
+          ldw       r0, sp[0xdd] 
           eq        r0, r0, 0x0
-          stw       r0, sp[0xdb] 
+          stw       r0, sp[0xdd] 
 .LDBG9:
 .LDBG10:
-.L5:
-.L66:
-          .loc      1 60 0
+.L6:
+.L76:
+          .loc      1 61 0
 
           mkmsk     r0, 0x1
-          bt        r0, .L6 
+          bt        r0, .L7 
 .LDBG11:
 .LDBG12:
-          bu        .L4 
+          bu        .L5 
 .LDBG13:
 .LDBG14:
-.L6:
-          .loc      1 61 0
-
 .L7:
-          .loc      1 61 0
+          .loc      1 62 0
+
+.L8:
+          .loc      1 62 0
+
+          mkmsk     r0, 0x1
+          stw       r0, sp[0xd9] 
+.L9:
+          .loc      1 63 0
+
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L82:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdc] 
+          ldw       r0, sp[0xdc] 
+          stw       r0, sp[0xdc] 
+.L10:
+          .loc      1 64 0
+
+          ldw       r0, sp[0xdc] 
+          ldw       r11, cp[.LC11]
+          .section .cp.const4,     "acM", @progbits, 4
+.LC11:
+          .align    4
+          .int      0x0bebc200
+
+          .text
+          add       r0, r0, r11
+          .loc      1 64 0
+
+          ldw       r1, sp[0xda] 
+          setd      res[r1], r0
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x9
+          ldw       r0, sp[0xda] 
+.L83:
+          in        r0, res[r0] 
+.LDBG15:
+          .loc      1 66 0
+
+.L11:
+          .loc      1 66 0
 
           ldw       r1, sp[0xd8] 
           ldaw      r2, sp[0xe] 
           ldc       r3, 0x0
           ldw       r0, sp[0x1] 
-          .loc      1 61 0
+          .loc      1 66 0
 
-.L72:
+.L84:
           bl        xtcp_connect 
-          .loc      1 66 0
+.L12:
+          .loc      1 69 0
 
-.L8:
-          .loc      1 66 0
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L85:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdc] 
+          ldw       r0, sp[0xdc] 
+          stw       r0, sp[0xdc] 
+.L13:
+          .loc      1 70 0
+
+          ldw       r0, sp[0xdc] 
+          ldw       r11, cp[.LC11]
+          add       r0, r0, r11
+          .loc      1 70 0
+
+          ldw       r1, sp[0xda] 
+          setd      res[r1], r0
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x9
+          ldw       r0, sp[0xda] 
+.L86:
+          in        r0, res[r0] 
+.LDBG16:
+          .loc      1 72 0
+
+.L14:
+          .loc      1 72 0
 
           ldw       r0, sp[0x1] 
-          .loc      1 66 0
+          .loc      1 72 0
 
-.L73:
+.L87:
           bl        xtcp_ask_for_event 
-.LDBG15:
-.LDBG16:
-.L10:
-.L64:
-          .loc      1 67 0
-
-          mkmsk     r0, 0x1
-          bt        r0, .L11 
 .LDBG17:
 .LDBG18:
-          bu        .L9 
+.L16:
+.L74:
+          .loc      1 73 0
+
+          ldw       r0, sp[0xd9] 
+          bt        r0, .L17 
 .LDBG19:
 .LDBG20:
-.L11:
-          .loc      1 68 0
+          bu        .L15 
+.LDBG21:
+.LDBG22:
+.L17:
+.L18:
+          .loc      1 74 0
+
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L88:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdc] 
+          ldw       r0, sp[0xdc] 
+          stw       r0, sp[0xdc] 
+.L19:
+          .loc      1 75 0
+
+          ldw       r0, sp[0xdc] 
+          ldw       r11, cp[.LC11]
+          add       r0, r0, r11
+          .loc      1 75 0
+
+          ldw       r1, sp[0xda] 
+          setd      res[r1], r0
+          ldw       r0, sp[0xda] 
+          setc      res[r0], 0x9
+          ldw       r0, sp[0xda] 
+.L89:
+          in        r0, res[r0] 
+.LDBG23:
+          .loc      1 76 0
 
           clre      
           ldw       r0, sp[0x1] 
-          ldap      r11, .L15
+          ldap      r11, .L23
           setv      res[r0], r11
           ldw       r0, sp[0x1] 
           eeu       res[r0]
-.xtabranch .L15
+.xtabranch .L23
           waiteu    
-.LDBG21:
-.LDBG22:
-.L15:
-          .loc      1 70 0
+.LDBG24:
+.LDBG25:
+.L23:
+          .loc      1 78 0
 
           ldw       r0, sp[0x1] 
-.L74:
+.L90:
           chkct     res[r0], 0x1 
           mkmsk     r1, 0x1
-          .loc      1 70 0
+          .loc      1 78 0
 
-.L21:
-          .loc      1 70 0
+.L29:
+          .loc      1 78 0
 
           ldaw      r2, sp[0x3] 
           mov       r0, r1
           ldw       r1, sp[0x1] 
-          .loc      1 70 0
+          .loc      1 78 0
 
-.L75:
+.L91:
           bl        xtcp_event 
           mov       r1, r0
-          bf        r1, .L19 
-.LDBG23:
-.LDBG24:
-.L18:
-          ldw       r0, sp[0x1] 
-          outct     res[r0], 0x1 
-          ldw       r0, sp[0x1] 
-          chkct     res[r0], 0x1 
-          bu        .L20 
-.LDBG25:
+          bf        r1, .L27 
 .LDBG26:
-.L19:
+.LDBG27:
+.L26:
+          ldw       r0, sp[0x1] 
+          outct     res[r0], 0x1 
+          ldw       r0, sp[0x1] 
+          chkct     res[r0], 0x1 
+          bu        .L28 
+.LDBG28:
+.LDBG29:
+.L27:
           ldw       r0, sp[0x1] 
           chkct     res[r0], 0x1 
           ldw       r0, sp[0x1] 
           outct     res[r0], 0x1 
-.LDBG27:
-.LDBG28:
-.L20:
-          .loc      1 71 0
+.LDBG30:
+.LDBG31:
+.L28:
+          .loc      1 79 0
 
           ldaw      r0, sp[0x3] 
           ldw       r0, r0[0x3] 
-          bu        .L22 
-.LDBG29:
-.LDBG30:
-.L24:
-          .loc      1 73 0
+          bu        .L30 
+.LDBG32:
+.LDBG33:
+.L32:
+          .loc      1 81 0
 
-.L25:
-          .loc      1 73 0
+.L33:
+          .loc      1 81 0
 
           ldaw      r11, cp[.LC2] 
           mov       r0, r11
           ldc       r1, 0x15
-          .loc      1 73 0
+          .loc      1 81 0
 
-.L76:
+.L92:
           bl        printstr 
-          .loc      1 77 0
+          .loc      1 83 0
 
-.L26:
-          .loc      1 77 0
+.L34:
+          .loc      1 83 0
 
           ldaw      r1, sp[0x3] 
           ldw       r0, sp[0x1] 
-          .loc      1 77 0
+          .loc      1 83 0
 
-.L77:
+.L93:
           bl        xtcp_init_send 
-          .loc      1 78 0
+          .loc      1 84 0
 
-.L27:
-          bu        .L23 
-.LDBG31:
-.LDBG32:
-          bu        .L28 
-.LDBG33:
+.L35:
+          bu        .L31 
 .LDBG34:
-.L28:
-          .loc      1 80 0
+.LDBG35:
+          bu        .L36 
+.LDBG36:
+.LDBG37:
+.L36:
+          .loc      1 86 0
 
-.L29:
-          .loc      1 80 0
+.L37:
+          .loc      1 86 0
 
           ldaw      r11, cp[.LC3] 
           mov       r0, r11
           ldc       r1, 0x10
-          .loc      1 80 0
+          .loc      1 86 0
 
-.L78:
+.L94:
           bl        printstr 
-          .loc      1 82 0
+          .loc      1 88 0
 
-.L30:
-          .loc      1 82 0
+.L38:
+          .loc      1 88 0
 
           ldaw      r1, sp[0xf] 
           ldw       r0, sp[0x1] 
           ldc       r2, 0x320
-          .loc      1 82 0
+          .loc      1 88 0
 
-.L79:
+.L95:
           bl        xtcp_recv 
           stw       r0, sp[0xd7] 
-          .loc      1 83 0
+          .loc      1 89 0
 
-.L31:
-          bu        .L23 
-.LDBG35:
-.LDBG36:
-          bu        .L32 
-.LDBG37:
+.L39:
+          bu        .L31 
 .LDBG38:
-.L32:
-          .loc      1 86 0
+.LDBG39:
+          bu        .L40 
+.LDBG40:
+.LDBG41:
+.L40:
+          .loc      1 92 0
 
-.L33:
-          .loc      1 86 0
+.L41:
+          .loc      1 92 0
 
           ldaw      r11, cp[.LC4] 
           mov       r0, r11
           ldc       r1, 0x13
-          .loc      1 86 0
+          .loc      1 92 0
 
-.L80:
+.L96:
           bl        printstr 
-          .loc      1 87 0
+          .loc      1 93 0
 
-.L34:
-          .loc      1 87 0
+.L42:
+          .loc      1 93 0
 
           ldaw      r1, sp[0xf] 
           ldc       r2, 0x1f4
           ldw       r0, sp[0x1] 
           ldc       r3, 0x320
-          .loc      1 87 0
+          .loc      1 93 0
 
-.L81:
+.L97:
           bl        xtcp_send 
-.L35:
-          .loc      1 88 0
+.L43:
+          .loc      1 94 0
 
-          ldw       r0, sp[0xd9] 
-          setc      res[r0], 0x1
-          ldw       r0, sp[0xd9] 
-.L82:
-          in        r0, res[r0] 
-          stw       r0, sp[0xda] 
           ldw       r0, sp[0xda] 
-          stw       r0, sp[0xda] 
-          .loc      1 89 0
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L98:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdb] 
+          ldw       r0, sp[0xdb] 
+          stw       r0, sp[0xdb] 
+          .loc      1 95 0
 
-.L36:
-          bu        .L23 
-.LDBG39:
-.LDBG40:
-          bu        .L37 
-.LDBG41:
+.L44:
+          bu        .L31 
 .LDBG42:
-.L37:
-          .loc      1 91 0
+.LDBG43:
+          bu        .L45 
+.LDBG44:
+.LDBG45:
+.L45:
+          .loc      1 97 0
 
-.L38:
-          .loc      1 91 0
+.L46:
+          .loc      1 97 0
 
           ldaw      r11, cp[.LC5] 
           mov       r0, r11
           ldc       r1, 0x12
-          .loc      1 91 0
+          .loc      1 97 0
 
-.L83:
+.L99:
           bl        printstr 
-          .loc      1 92 0
+          .loc      1 98 0
 
-.L39:
-          .loc      1 92 0
+.L47:
+          .loc      1 98 0
 
           ldaw      r1, sp[0xf] 
           ldc       r2, 0x1f4
           ldw       r0, sp[0x1] 
           ldc       r3, 0x320
-          .loc      1 92 0
+          .loc      1 98 0
 
-.L84:
+.L100:
           bl        xtcp_send 
-.L40:
-          .loc      1 93 0
+.L48:
+          .loc      1 99 0
 
-          ldw       r0, sp[0xd9] 
-          setc      res[r0], 0x1
-          ldw       r0, sp[0xd9] 
-.L85:
-          in        r0, res[r0] 
-          stw       r0, sp[0xda] 
           ldw       r0, sp[0xda] 
-          stw       r0, sp[0xda] 
-          .loc      1 94 0
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L101:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdb] 
+          ldw       r0, sp[0xdb] 
+          stw       r0, sp[0xdb] 
+          .loc      1 100 0
 
-.L41:
-          bu        .L23 
-.LDBG43:
-.LDBG44:
-          bu        .L42 
-.LDBG45:
+.L49:
+          bu        .L31 
 .LDBG46:
-.L42:
-          .loc      1 96 0
+.LDBG47:
+          bu        .L50 
+.LDBG48:
+.LDBG49:
+.L50:
+          .loc      1 102 0
 
-.L43:
-          .loc      1 96 0
+.L51:
+          .loc      1 102 0
 
           ldaw      r11, cp[.LC6] 
           mov       r0, r11
           ldc       r1, 0xc
-          .loc      1 96 0
+          .loc      1 102 0
 
-.L86:
+.L102:
           bl        printstr 
-.L44:
-          .loc      1 97 0
+.L52:
+          .loc      1 103 0
 
-          ldw       r0, sp[0xda] 
-          ldw       r11, cp[.LC11]
+          ldw       r0, sp[0xdb] 
+          ldw       r11, cp[.LC12]
           .section .cp.const4,     "acM", @progbits, 4
-.LC11:
+.LC12:
           .align    4
           .int      0x02faf080
 
           .text
           add       r0, r0, r11
-          .loc      1 97 0
+          .loc      1 103 0
 
-          ldw       r1, sp[0xd9] 
+          ldw       r1, sp[0xda] 
           setd      res[r1], r0
-          ldw       r0, sp[0xd9] 
+          ldw       r0, sp[0xda] 
           setc      res[r0], 0x9
-          ldw       r0, sp[0xd9] 
-.L87:
+          ldw       r0, sp[0xda] 
+.L103:
           in        r0, res[r0] 
-.LDBG47:
-.L45:
-          .loc      1 98 0
+.LDBG50:
+.L53:
+          .loc      1 104 0
 
           ldw       r1, sp[0x2] 
-          ldw       r0, sp[0xdb] 
-.L88:
+          ldw       r0, sp[0xdd] 
+.L104:
           out       res[r1], r0 
-          .loc      1 99 0
+          .loc      1 105 0
 
-.L46:
-          .loc      1 99 0
+.L54:
+          .loc      1 105 0
 
-          ldw       r0, sp[0xdb] 
+          ldw       r0, sp[0xdd] 
           eq        r0, r0, 0x0
-          stw       r0, sp[0xdb] 
-          .loc      1 100 0
+          stw       r0, sp[0xdd] 
+          .loc      1 106 0
 
-.L47:
-          .loc      1 100 0
+.L55:
+          .loc      1 106 0
 
           ldaw      r1, sp[0xf] 
           ldc       r2, 0x1f4
           ldw       r0, sp[0x1] 
           ldc       r3, 0x320
-          .loc      1 100 0
+          .loc      1 106 0
 
-.L89:
+.L105:
           bl        xtcp_send 
-.L48:
-          .loc      1 101 0
+.L56:
+          .loc      1 107 0
 
-          ldw       r0, sp[0xd9] 
-          setc      res[r0], 0x1
-          ldw       r0, sp[0xd9] 
-.L90:
-          in        r0, res[r0] 
-          stw       r0, sp[0xda] 
           ldw       r0, sp[0xda] 
-          stw       r0, sp[0xda] 
-          .loc      1 103 0
+          setc      res[r0], 0x1
+          ldw       r0, sp[0xda] 
+.L106:
+          in        r0, res[r0] 
+          stw       r0, sp[0xdb] 
+          ldw       r0, sp[0xdb] 
+          stw       r0, sp[0xdb] 
+          .loc      1 109 0
 
-.L49:
-          bu        .L23 
-.LDBG48:
-.LDBG49:
-          bu        .L50 
-.LDBG50:
+.L57:
+          bu        .L31 
 .LDBG51:
-.L50:
-          .loc      1 106 0
+.LDBG52:
+          bu        .L58 
+.LDBG53:
+.LDBG54:
+.L58:
+          .loc      1 112 0
 
-.L51:
-          .loc      1 106 0
+.L59:
+          .loc      1 112 0
 
           ldaw      r11, cp[.LC7] 
           mov       r0, r11
           ldc       r1, 0x10
-          .loc      1 106 0
+          .loc      1 112 0
 
-.L91:
+.L107:
           bl        printstr 
-          .loc      1 108 0
+          .loc      1 114 0
 
-.L52:
-          bu        .L23 
-.LDBG52:
-.LDBG53:
-          bu        .L53 
-.LDBG54:
+.L60:
+          .loc      1 114 0
+
+          ldc       r0, 0x0
+          stw       r0, sp[0xd9] 
+          .loc      1 115 0
+
+.L61:
+          bu        .L31 
 .LDBG55:
-.L53:
-          .loc      1 110 0
+.LDBG56:
+          bu        .L62 
+.LDBG57:
+.LDBG58:
+.L62:
+          .loc      1 117 0
 
-.L54:
-          .loc      1 110 0
+.L63:
+          .loc      1 117 0
 
           ldaw      r11, cp[.LC8] 
           mov       r0, r11
           ldc       r1, 0xe
-          .loc      1 110 0
+          .loc      1 117 0
 
-.L92:
+.L108:
           bl        printstr 
-          .loc      1 112 0
+          .loc      1 119 0
 
-.L55:
-          bu        .L23 
-.LDBG56:
-.LDBG57:
-          bu        .L56 
-.LDBG58:
+.L64:
+          .loc      1 119 0
+
+          ldc       r0, 0x0
+          stw       r0, sp[0xd9] 
+          .loc      1 120 0
+
+.L65:
+          bu        .L31 
 .LDBG59:
-.L56:
-          .loc      1 114 0
+.LDBG60:
+          bu        .L66 
+.LDBG61:
+.LDBG62:
+.L66:
+          .loc      1 122 0
 
-.L57:
-          .loc      1 114 0
+.L67:
+          .loc      1 122 0
 
           ldaw      r11, cp[.LC9] 
           mov       r0, r11
           ldc       r1, 0xd
-          .loc      1 114 0
+          .loc      1 122 0
 
-.L93:
+.L109:
           bl        printstr 
-          .loc      1 116 0
+          .loc      1 124 0
 
-.L58:
-          bu        .L23 
-.LDBG60:
-.LDBG61:
-          bu        .L59 
-.LDBG62:
+.L68:
+          bu        .L31 
 .LDBG63:
-.L59:
-          bu        .L60 
 .LDBG64:
+          bu        .L69 
 .LDBG65:
-.L60:
-          .loc      1 120 0
+.LDBG66:
+.L69:
+          bu        .L70 
+.LDBG67:
+.LDBG68:
+.L70:
+          .loc      1 128 0
 
-.L61:
-          .loc      1 120 0
+.L71:
+          .loc      1 128 0
 
           ldaw      r11, cp[.LC10] 
           mov       r0, r11
           ldc       r1, 0xc
-          .loc      1 120 0
+          .loc      1 128 0
 
-.L94:
+.L110:
           bl        printstr 
-          .loc      1 122 0
+          .loc      1 130 0
 
-.L62:
-          bu        .L23 
-.LDBG66:
-.LDBG67:
-          bu        .L23 
-.LDBG68:
+.L72:
+          bu        .L31 
 .LDBG69:
-.L22:
-          bf        r0, .L24 
 .LDBG70:
+          bu        .L31 
 .LDBG71:
-          eq        r1, r0, 0x1
-          bt        r1, .L28 
 .LDBG72:
+.L30:
+          bf        r0, .L32 
 .LDBG73:
-          eq        r1, r0, 0x2
-          bt        r1, .L32 
 .LDBG74:
+          eq        r1, r0, 0x1
+          bt        r1, .L36 
 .LDBG75:
-          eq        r1, r0, 0x4
-          bt        r1, .L37 
 .LDBG76:
+          eq        r1, r0, 0x2
+          bt        r1, .L40 
 .LDBG77:
-          eq        r1, r0, 0x3
-          bt        r1, .L42 
 .LDBG78:
+          eq        r1, r0, 0x4
+          bt        r1, .L45 
 .LDBG79:
-          eq        r1, r0, 0x5
-          bt        r1, .L50 
 .LDBG80:
+          eq        r1, r0, 0x3
+          bt        r1, .L50 
 .LDBG81:
-          eq        r1, r0, 0x6
-          bt        r1, .L53 
 .LDBG82:
+          eq        r1, r0, 0x5
+          bt        r1, .L58 
 .LDBG83:
-          eq        r1, r0, 0x7
-          bt        r1, .L56 
 .LDBG84:
+          eq        r1, r0, 0x6
+          bt        r1, .L62 
 .LDBG85:
-          eq        r1, r0, 0x8
-          bt        r1, .L59 
 .LDBG86:
+          eq        r1, r0, 0x7
+          bt        r1, .L66 
 .LDBG87:
-          eq        r0, r0, 0x9
-          bt        r0, .L60 
 .LDBG88:
+          eq        r1, r0, 0x8
+          bt        r1, .L69 
 .LDBG89:
-.L23:
-          .loc      1 126 0
+.LDBG90:
+          eq        r0, r0, 0x9
+          bt        r0, .L70 
+.LDBG91:
+.LDBG92:
+.L31:
+          .loc      1 134 0
 
-.L63:
-          .loc      1 126 0
+.L73:
+          .loc      1 134 0
 
           ldw       r0, sp[0x1] 
-          .loc      1 126 0
+          .loc      1 134 0
 
-.L95:
+.L111:
           bl        xtcp_ask_for_event 
-          bu        .L14 
-.LDBG90:
-.LDBG91:
-.L12:
-.LDBG92:
+          bu        .L22 
 .LDBG93:
-.L14:
-.L65:
-          bu        .L10 
 .LDBG94:
+.L20:
 .LDBG95:
-.L9:
-.L67:
-          bu        .L5 
 .LDBG96:
+.L22:
+.L75:
+          bu        .L16 
 .LDBG97:
-.L4:
-.LDBG7:
-          .loc      1 131 0
-
-          ldw       r0, sp[0xd9] 
-          freer     res[r0]
-.LDBG101:
-.L68:
-          retsp     0xdc 
 .LDBG98:
-.LDBG102:
-.LDBG103:
+.L15:
+.L77:
+          bu        .L6 
+.LDBG99:
+.LDBG100:
+.L5:
+.LDBG7:
+          .loc      1 139 0
+
+          ldw       r0, sp[0xda] 
+          freer     res[r0]
+.LDBG104:
+.L78:
+          retsp     0xde 
+.LDBG101:
+.LDBG105:
+.LDBG106:
 .cc_bottom xhttpd.function
           .section  .debug_frame, "",     @progbits
 .cc_top xhttpd.function,xhttpd
           .align    4
-          .int      .LDBG105-.LDBG104
-.LDBG104:
+          .int      .LDBG108-.LDBG107
+.LDBG107:
           .long     .LDBG2           # offset in .debug_frame
-          .int      .LDBG99
-          .int      .LDBG103-.LDBG99
+          .int      .LDBG102
+          .int      .LDBG106-.LDBG102
           .byte     0x01
-          .int      .LDBG100
+          .int      .LDBG103
           .byte     0x0e
-          .uleb128  0x370
+          .uleb128  0x378
           .byte     0x14
           .uleb128  0xe
           .uleb128  0x0
           .byte     0x8f
           .uleb128  0x0
           .byte     0x01
-          .int      .LDBG101
+          .int      .LDBG104
           .byte     0x0a
           .byte     0x01
-          .int      .LDBG102
+          .int      .LDBG105
           .byte     0x0b
           .align    4, 0
-.LDBG105:
+.LDBG108:
 .cc_bottom xhttpd.function
 .linkset .LLNK39, __crt_memcpy.maxchanends $M __crt_memcpy.maxchanends
 .linkset .LLNK38, .LLNK39 $M xtcp_connect.maxchanends
@@ -1041,113 +1157,113 @@ xhttpd:
 .linkset .LLNK78, .LLNK79 $M .LLNK136
 .linkset xhttpd.maxthreads, .LLNK78
           .text
-.LDBG106:
+.LDBG109:
 # Thread names for recovering thread graph in linker
-.LDBG107:
+.LDBG110:
 .extern __builtin_getid, "f{si}(0)"
 .extern __builtin_getid, "f{si}(0)"
           .section  .debug_info,   "",    @progbits
-.LDBG109:
-          .int      .LDBG111-.LDBG110
-.LDBG110:
+.LDBG112:
+          .int      .LDBG114-.LDBG113
+.LDBG113:
           .short    0x0003
-          .long     .LDBG108         # offset in .debug_abbrev
+          .long     .LDBG111         # offset in .debug_abbrev
           .byte     0x04
           .uleb128  0x1
           .long     .LDBG0           # low address
-          .long     .LDBG107         # high address
+          .long     .LDBG110         # high address
           .asciiz   ".././src/xhttpd.xc"
           .asciiz   "/Users/russ/XDEwspaceTClient/app_simple_webserver.1v3/.build_XC-2"
           .short    0xc000
           .asciiz   "XMOS Dwarf Symbolic Debug Generator"
           .long     .LDBG1           # offset in .debug_lineprog
-.LDBG112:
+.LDBG115:
           .uleb128  0x2
           .asciiz   "long"
           .byte     0x05
           .byte     0x04
-.LDBG113:
+.LDBG116:
           .uleb128  0x2
           .asciiz   "unsigned long"
           .byte     0x07
           .byte     0x04
-.LDBG114:
+.LDBG117:
           .uleb128  0x2
           .asciiz   "int"
           .byte     0x05
           .byte     0x04
-.LDBG115:
+.LDBG118:
           .uleb128  0x2
           .asciiz   "unsigned int"
           .byte     0x07
           .byte     0x04
-.LDBG116:
+.LDBG119:
           .uleb128  0x2
           .asciiz   "short"
           .byte     0x05
           .byte     0x02
-.LDBG117:
+.LDBG120:
           .uleb128  0x2
           .asciiz   "unsigned short"
           .byte     0x07
           .byte     0x02
-.LDBG118:
+.LDBG121:
           .uleb128  0x2
           .asciiz   "char"
           .byte     0x06
           .byte     0x01
-.LDBG119:
+.LDBG122:
           .uleb128  0x2
           .asciiz   "unsigned char"
           .byte     0x08
           .byte     0x01
-.LDBG120:
+.LDBG123:
           .uleb128  0x2
           .asciiz   "chanend"
           .byte     0x07
           .byte     0x04
-.LDBG121:
+.LDBG124:
           .uleb128  0x2
           .asciiz   "timer"
           .byte     0x07
           .byte     0x04
-.LDBG122:
+.LDBG125:
           .uleb128  0x2
           .asciiz   "clock"
           .byte     0x07
           .byte     0x04
-.LDBG123:
+.LDBG126:
           .uleb128  0x2
           .asciiz   "port"
           .byte     0x07
           .byte     0x04
-.LDBG124:
+.LDBG127:
           .uleb128  0x2
           .asciiz   "buffered port:1"
           .byte     0x07
           .byte     0x04
-.LDBG125:
+.LDBG128:
           .uleb128  0x2
           .asciiz   "buffered port:4"
           .byte     0x07
           .byte     0x04
-.LDBG126:
+.LDBG129:
           .uleb128  0x2
           .asciiz   "buffered port:8"
           .byte     0x07
           .byte     0x04
-.LDBG127:
+.LDBG130:
           .uleb128  0x2
           .asciiz   "buffered port:16"
           .byte     0x07
           .byte     0x04
-.LDBG128:
+.LDBG131:
           .uleb128  0x2
           .asciiz   "buffered port:32"
           .byte     0x07
           .byte     0x04
 .cc_top xhttpd.function,xhttpd
-.LDBG129:
+.LDBG132:
           .uleb128  0x3
           .asciiz   "xhttpd"
           .byte     0x01
@@ -1155,23 +1271,23 @@ xhttpd:
           .byte     0x01
           .byte     0x01
           .long     .LDBG5           # low address
-          .long     .LDBG106         # high address
+          .long     .LDBG109         # high address
           .uleb128  0x4
           .asciiz   "tcp_svr"
           .byte     0x01
           .short    0x001a
-          .int      .LDBG120-.LDBG109
-          .int      .LDBG130
+          .int      .LDBG123-.LDBG112
+          .int      .LDBG133
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
-.LDBG130:
+.LDBG133:
           .int      .LDBG5-.LDBG0
-          .int      .LDBG106-.LDBG0
-          .short    .LDBG132-.LDBG131
-.LDBG131:
+          .int      .LDBG109-.LDBG0
+          .short    .LDBG135-.LDBG134
+.LDBG134:
           .byte     0x7e
           .sleb128  0x4
-.LDBG132:
+.LDBG135:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
@@ -1180,23 +1296,23 @@ xhttpd:
           .asciiz   "x0ledB"
           .byte     0x01
           .short    0x001a
-          .int      .LDBG123-.LDBG109
-          .int      .LDBG133
+          .int      .LDBG126-.LDBG112
+          .int      .LDBG136
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
-.LDBG133:
+.LDBG136:
           .int      .LDBG5-.LDBG0
-          .int      .LDBG106-.LDBG0
-          .short    .LDBG135-.LDBG134
-.LDBG134:
+          .int      .LDBG109-.LDBG0
+          .short    .LDBG138-.LDBG137
+.LDBG137:
           .byte     0x7e
           .sleb128  0x8
-.LDBG135:
+.LDBG138:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
-.LDBG136:
+.LDBG139:
           .uleb128  0x5
           .asciiz   "xtcp_connection_t"
           .int      0x00000028
@@ -1205,9 +1321,9 @@ xhttpd:
           .file     2 "xtcp_client.h"
           .byte     0x02
           .short    0x0052
-          .int      .LDBG114-.LDBG109
+          .int      .LDBG117-.LDBG112
           .uleb128  0x0
-.LDBG137:
+.LDBG140:
           .uleb128  0x7
           .asciiz   "xtcp_protocol_t"
           .int      0x00000004
@@ -1222,9 +1338,9 @@ xhttpd:
           .asciiz   "protocol"
           .byte     0x02
           .short    0x0053
-          .int      .LDBG137-.LDBG109
+          .int      .LDBG140-.LDBG112
           .uleb128  0x4
-.LDBG138:
+.LDBG141:
           .uleb128  0x7
           .asciiz   "xtcp_connection_type_t"
           .int      0x00000004
@@ -1239,9 +1355,9 @@ xhttpd:
           .asciiz   "connection_type"
           .byte     0x02
           .short    0x0054
-          .int      .LDBG138-.LDBG109
+          .int      .LDBG141-.LDBG112
           .uleb128  0x8
-.LDBG139:
+.LDBG142:
           .uleb128  0x7
           .asciiz   "xtcp_event_type_t"
           .int      0x00000004
@@ -1280,17 +1396,17 @@ xhttpd:
           .asciiz   "event"
           .byte     0x02
           .short    0x0055
-          .int      .LDBG139-.LDBG109
+          .int      .LDBG142-.LDBG112
           .uleb128  0xc
           .uleb128  0x6
           .asciiz   "appstate"
           .byte     0x02
           .short    0x0056
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG118-.LDBG112
           .uleb128  0x10
-.LDBG140:
+.LDBG143:
           .uleb128  0x9
-          .int      .LDBG119-.LDBG109
+          .int      .LDBG122-.LDBG112
           .int      0x00000004
           .uleb128  0xa
           .byte     0x00
@@ -1300,31 +1416,31 @@ xhttpd:
           .asciiz   "remote_addr"
           .byte     0x02
           .short    0x0057
-          .int      .LDBG140-.LDBG109
+          .int      .LDBG143-.LDBG112
           .uleb128  0x14
           .uleb128  0x6
           .asciiz   "local_port"
           .byte     0x02
           .short    0x0058
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG118-.LDBG112
           .uleb128  0x18
           .uleb128  0x6
           .asciiz   "remote_port"
           .byte     0x02
           .short    0x0059
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG118-.LDBG112
           .uleb128  0x1c
           .uleb128  0x6
           .asciiz   "accepted"
           .byte     0x02
           .short    0x005a
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG118-.LDBG112
           .uleb128  0x20
           .uleb128  0x6
           .asciiz   "mss"
           .byte     0x02
           .short    0x005b
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG118-.LDBG112
           .uleb128  0x24
           .byte     0x00
           .uleb128  0xb
@@ -1332,18 +1448,18 @@ xhttpd:
           .byte     0x01
           .short    0x002f
           .short    0x0000
-          .int      .LDBG136-.LDBG109
-          .int      .LDBG141
+          .int      .LDBG139-.LDBG112
+          .int      .LDBG144
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
-.LDBG141:
+.LDBG144:
           .int      .LDBG6-.LDBG0
           .int      .LDBG7-.LDBG0
-          .short    .LDBG143-.LDBG142
-.LDBG142:
+          .short    .LDBG146-.LDBG145
+.LDBG145:
           .byte     0x7e
           .sleb128  0xc
-.LDBG143:
+.LDBG146:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
@@ -1353,18 +1469,18 @@ xhttpd:
           .byte     0x01
           .short    0x0030
           .short    0x0000
-          .int      .LDBG115-.LDBG109
-          .int      .LDBG144
+          .int      .LDBG118-.LDBG112
+          .int      .LDBG147
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
-.LDBG144:
+.LDBG147:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
-.LDBG145:
+.LDBG148:
           .uleb128  0x9
-          .int      .LDBG119-.LDBG109
+          .int      .LDBG122-.LDBG112
           .int      0x00000004
           .uleb128  0xa
           .byte     0x00
@@ -1375,25 +1491,25 @@ xhttpd:
           .byte     0x01
           .short    0x0031
           .short    0x0000
-          .int      .LDBG145-.LDBG109
-          .int      .LDBG146
+          .int      .LDBG148-.LDBG112
+          .int      .LDBG149
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
-.LDBG146:
+.LDBG149:
           .int      .LDBG6-.LDBG0
           .int      .LDBG7-.LDBG0
-          .short    .LDBG148-.LDBG147
-.LDBG147:
+          .short    .LDBG151-.LDBG150
+.LDBG150:
           .byte     0x7e
           .sleb128  0x38
-.LDBG148:
+.LDBG151:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
-.LDBG149:
+.LDBG152:
           .uleb128  0x9
-          .int      .LDBG119-.LDBG109
+          .int      .LDBG122-.LDBG112
           .int      0x00000320
           .uleb128  0xa
           .byte     0x00
@@ -1404,28 +1520,7 @@ xhttpd:
           .byte     0x01
           .short    0x0032
           .short    0x0000
-          .int      .LDBG149-.LDBG109
-          .int      .LDBG150
-          .section  .debug_loc,    "",    @progbits
-.cc_top xhttpd.function,xhttpd
-.LDBG150:
-          .int      .LDBG6-.LDBG0
-          .int      .LDBG7-.LDBG0
-          .short    .LDBG152-.LDBG151
-.LDBG151:
-          .byte     0x7e
-          .sleb128  0x3c
-.LDBG152:
-          .int      0x00000000
-          .int      0x00000000
-.cc_bottom xhttpd.function
-          .section  .debug_info,   "",    @progbits
-          .uleb128  0xb
-          .asciiz   "len"
-          .byte     0x01
-          .short    0x0033
-          .short    0x0000
-          .int      .LDBG114-.LDBG109
+          .int      .LDBG152-.LDBG112
           .int      .LDBG153
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
@@ -1435,18 +1530,18 @@ xhttpd:
           .short    .LDBG155-.LDBG154
 .LDBG154:
           .byte     0x7e
-          .sleb128  0x35c
+          .sleb128  0x3c
 .LDBG155:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
           .uleb128  0xb
-          .asciiz   "rem_port"
+          .asciiz   "len"
           .byte     0x01
-          .short    0x0034
+          .short    0x0033
           .short    0x0000
-          .int      .LDBG114-.LDBG109
+          .int      .LDBG117-.LDBG112
           .int      .LDBG156
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
@@ -1456,18 +1551,18 @@ xhttpd:
           .short    .LDBG158-.LDBG157
 .LDBG157:
           .byte     0x7e
-          .sleb128  0x360
+          .sleb128  0x35c
 .LDBG158:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
           .uleb128  0xb
-          .asciiz   "tmr"
+          .asciiz   "rem_port"
           .byte     0x01
-          .short    0x0035
+          .short    0x0034
           .short    0x0000
-          .int      .LDBG121-.LDBG109
+          .int      .LDBG117-.LDBG112
           .int      .LDBG159
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
@@ -1477,18 +1572,18 @@ xhttpd:
           .short    .LDBG161-.LDBG160
 .LDBG160:
           .byte     0x7e
-          .sleb128  0x364
+          .sleb128  0x360
 .LDBG161:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
           .uleb128  0xb
-          .asciiz   "t"
+          .asciiz   "sendloop"
           .byte     0x01
-          .short    0x0036
+          .short    0x0035
           .short    0x0000
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG117-.LDBG112
           .int      .LDBG162
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
@@ -1498,18 +1593,18 @@ xhttpd:
           .short    .LDBG164-.LDBG163
 .LDBG163:
           .byte     0x7e
-          .sleb128  0x368
+          .sleb128  0x364
 .LDBG164:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
           .section  .debug_info,   "",    @progbits
           .uleb128  0xb
-          .asciiz   "ledOn"
+          .asciiz   "tmr"
           .byte     0x01
-          .short    0x0037
+          .short    0x0036
           .short    0x0000
-          .int      .LDBG115-.LDBG109
+          .int      .LDBG124-.LDBG112
           .int      .LDBG165
           .section  .debug_loc,    "",    @progbits
 .cc_top xhttpd.function,xhttpd
@@ -1519,8 +1614,71 @@ xhttpd:
           .short    .LDBG167-.LDBG166
 .LDBG166:
           .byte     0x7e
-          .sleb128  0x36c
+          .sleb128  0x368
 .LDBG167:
+          .int      0x00000000
+          .int      0x00000000
+.cc_bottom xhttpd.function
+          .section  .debug_info,   "",    @progbits
+          .uleb128  0xb
+          .asciiz   "t"
+          .byte     0x01
+          .short    0x0037
+          .short    0x0000
+          .int      .LDBG118-.LDBG112
+          .int      .LDBG168
+          .section  .debug_loc,    "",    @progbits
+.cc_top xhttpd.function,xhttpd
+.LDBG168:
+          .int      .LDBG6-.LDBG0
+          .int      .LDBG7-.LDBG0
+          .short    .LDBG170-.LDBG169
+.LDBG169:
+          .byte     0x7e
+          .sleb128  0x36c
+.LDBG170:
+          .int      0x00000000
+          .int      0x00000000
+.cc_bottom xhttpd.function
+          .section  .debug_info,   "",    @progbits
+          .uleb128  0xb
+          .asciiz   "tt"
+          .byte     0x01
+          .short    0x0037
+          .short    0x0000
+          .int      .LDBG118-.LDBG112
+          .int      .LDBG171
+          .section  .debug_loc,    "",    @progbits
+.cc_top xhttpd.function,xhttpd
+.LDBG171:
+          .int      .LDBG6-.LDBG0
+          .int      .LDBG7-.LDBG0
+          .short    .LDBG173-.LDBG172
+.LDBG172:
+          .byte     0x7e
+          .sleb128  0x370
+.LDBG173:
+          .int      0x00000000
+          .int      0x00000000
+.cc_bottom xhttpd.function
+          .section  .debug_info,   "",    @progbits
+          .uleb128  0xb
+          .asciiz   "ledOn"
+          .byte     0x01
+          .short    0x0038
+          .short    0x0000
+          .int      .LDBG118-.LDBG112
+          .int      .LDBG174
+          .section  .debug_loc,    "",    @progbits
+.cc_top xhttpd.function,xhttpd
+.LDBG174:
+          .int      .LDBG6-.LDBG0
+          .int      .LDBG7-.LDBG0
+          .short    .LDBG176-.LDBG175
+.LDBG175:
+          .byte     0x7e
+          .sleb128  0x374
+.LDBG176:
           .int      0x00000000
           .int      0x00000000
 .cc_bottom xhttpd.function
@@ -1528,21 +1686,21 @@ xhttpd:
           .byte     0x00
 .cc_bottom xhttpd.function
           .byte     0x00
-.LDBG111:
+.LDBG114:
           .section  .debug_pubnames, "",  @progbits
-          .int      .LDBG169-.LDBG168
-.LDBG168:
+          .int      .LDBG178-.LDBG177
+.LDBG177:
           .short    0x0002
-          .long     .LDBG109         # offset in .debug_info
-          .int      .LDBG111-.LDBG109
+          .long     .LDBG112         # offset in .debug_info
+          .int      .LDBG114-.LDBG112
 .cc_top xhttpd.function,xhttpd
-          .int      .LDBG129-.LDBG109
+          .int      .LDBG132-.LDBG112
           .asciiz   "xhttpd"
 .cc_bottom xhttpd.function
           .int      0x00000000
-.LDBG169:
+.LDBG178:
           .section  .debug_abbrev, "",    @progbits
-.LDBG108:
+.LDBG111:
           .uleb128  0x1
           .byte     0x11
           .byte     0x01
@@ -1687,284 +1845,354 @@ xhttpd:
 
           .byte     0x00
           .section .xtaendpointtable,       "", @progbits
-.L96:
-          .int      .L97-.L96
+.L112:
+          .int      .L113-.L112
           .int      0x00000000
           .asciiz   "/Users/russ/XDEwspaceTClient/app_simple_webserver.1v3/.build_XC-2"
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000065
+          .int      0x0000006b
+          .long    .L106
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000068
+          .long    .L104
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000067
+          .long    .L103
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000063
+          .long    .L101
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000005e
+          .long    .L98
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000004e
           .long    .L90
 .cc_bottom xhttpd.function
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000062
-          .long    .L88
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000061
-          .long    .L87
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000005d
-          .long    .L85
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000058
-          .long    .L82
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000046
-          .long    .L74
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000039
-          .long    .L71
-.cc_bottom xhttpd.function
-.L97:
-          .section .xtacalltable,       "", @progbits
-.L98:
-          .int      .L99-.L98
-          .int      0x00000000
-          .asciiz   "/Users/russ/XDEwspaceTClient/app_simple_webserver.1v3/.build_XC-2"
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000007e
-          .long    .L95
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000078
-          .long    .L94
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000072
-          .long    .L93
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000006e
-          .long    .L92
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000006a
-          .long    .L91
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000064
+          .int      0x0000004b
           .long    .L89
 .cc_bottom xhttpd.function
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000060
+          .int      0x0000004a
+          .long    .L88
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000046
           .long    .L86
 .cc_bottom xhttpd.function
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000005c
-          .long    .L84
+          .int      0x00000045
+          .long    .L85
 .cc_bottom xhttpd.function
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000005b
+          .int      0x00000040
           .long    .L83
 .cc_bottom xhttpd.function
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000057
+          .int      0x0000003f
+          .long    .L82
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000003a
           .long    .L81
 .cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000056
-          .long    .L80
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000052
-          .long    .L79
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000050
-          .long    .L78
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000004d
-          .long    .L77
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000049
-          .long    .L76
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000046
-          .long    .L75
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000042
-          .long    .L73
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000003d
-          .long    .L72
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000032
-          .long    .L70
-.cc_bottom xhttpd.function
-.cc_top xhttpd.function, xhttpd
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000031
-          .long    .L69
-.cc_bottom xhttpd.function
-.L99:
-          .section .xtalabeltable,       "", @progbits
-.L100:
-          .int      .L101-.L100
+.L113:
+          .section .xtacalltable,       "", @progbits
+.L114:
+          .int      .L115-.L114
           .int      0x00000000
           .asciiz   "/Users/russ/XDEwspaceTClient/app_simple_webserver.1v3/.build_XC-2"
 .cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000083
-          .int      0x00000083
-          .long    .L68
+          .int      0x00000086
+          .long    .L111
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000007e
-          .int      0x0000007e
+          .int      0x00000080
+          .long    .L110
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000007a
+          .long    .L109
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000075
+          .long    .L108
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000070
+          .long    .L107
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000006a
+          .long    .L105
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000066
+          .long    .L102
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000062
+          .long    .L100
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000061
+          .long    .L99
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000005d
+          .long    .L97
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000005c
+          .long    .L96
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000058
+          .long    .L95
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000056
+          .long    .L94
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000053
+          .long    .L93
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000051
+          .long    .L92
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000004e
+          .long    .L91
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000048
+          .long    .L87
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000042
+          .long    .L84
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000032
+          .long    .L80
+.cc_bottom xhttpd.function
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000031
+          .long    .L79
+.cc_bottom xhttpd.function
+.L115:
+          .section .xtalabeltable,       "", @progbits
+.L116:
+          .int      .L117-.L116
+          .int      0x00000000
+          .asciiz   "/Users/russ/XDEwspaceTClient/app_simple_webserver.1v3/.build_XC-2"
+.cc_top xhttpd.function, xhttpd
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000008b
+          .int      0x0000008b
+          .long    .L78
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000086
+          .int      0x00000086
+          .long    .L73
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000080
+          .int      0x00000080
+          .long    .L71
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000007a
+          .int      0x0000007a
+          .long    .L67
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000077
+          .int      0x00000077
+          .long    .L64
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000075
+          .int      0x00000075
           .long    .L63
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000078
-          .int      0x00000078
-          .long    .L61
-          .asciiz  ".././src/xhttpd.xc"
           .int      0x00000072
           .int      0x00000072
-          .long    .L57
+          .long    .L60
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000006e
-          .int      0x0000006e
+          .int      0x00000070
+          .int      0x00000070
+          .long    .L59
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000006b
+          .int      0x0000006b
+          .long    .L56
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000006a
+          .int      0x0000006a
+          .long    .L55
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000069
+          .int      0x00000069
           .long    .L54
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000006a
-          .int      0x0000006a
+          .int      0x00000068
+          .int      0x00000068
+          .long    .L53
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000067
+          .int      0x00000067
+          .long    .L52
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000066
+          .int      0x00000066
           .long    .L51
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000065
-          .int      0x00000065
+          .int      0x00000063
+          .int      0x00000063
           .long    .L48
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000064
-          .int      0x00000064
+          .int      0x00000062
+          .int      0x00000062
           .long    .L47
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000063
-          .int      0x00000063
+          .int      0x00000061
+          .int      0x00000061
           .long    .L46
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000062
-          .int      0x00000062
-          .long    .L45
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000061
-          .int      0x00000061
-          .long    .L44
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000060
-          .int      0x00000060
+          .int      0x0000005e
+          .int      0x0000005e
           .long    .L43
           .asciiz  ".././src/xhttpd.xc"
           .int      0x0000005d
           .int      0x0000005d
-          .long    .L40
+          .long    .L42
           .asciiz  ".././src/xhttpd.xc"
           .int      0x0000005c
           .int      0x0000005c
-          .long    .L39
+          .long    .L41
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000005b
-          .int      0x0000005b
+          .int      0x00000058
+          .int      0x00000058
           .long    .L38
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000058
-          .int      0x00000058
-          .long    .L35
+          .int      0x00000056
+          .int      0x00000056
+          .long    .L37
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000057
-          .int      0x00000057
+          .int      0x00000053
+          .int      0x00000053
           .long    .L34
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000056
-          .int      0x00000056
+          .int      0x00000051
+          .int      0x00000051
           .long    .L33
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000052
-          .int      0x00000052
-          .long    .L30
-          .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000050
-          .int      0x00000050
+          .int      0x0000004e
+          .int      0x0000004e
           .long    .L29
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000004d
-          .int      0x0000004d
-          .long    .L26
+          .int      0x0000004b
+          .int      0x0000004b
+          .long    .L19
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000004a
+          .int      0x0000004a
+          .long    .L18
           .asciiz  ".././src/xhttpd.xc"
           .int      0x00000049
           .int      0x00000049
-          .long    .L25
+          .long    .L74
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000048
+          .int      0x00000048
+          .long    .L14
           .asciiz  ".././src/xhttpd.xc"
           .int      0x00000046
           .int      0x00000046
-          .long    .L21
+          .long    .L13
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000043
-          .int      0x00000043
-          .long    .L64
+          .int      0x00000045
+          .int      0x00000045
+          .long    .L12
           .asciiz  ".././src/xhttpd.xc"
           .int      0x00000042
           .int      0x00000042
+          .long    .L11
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x00000040
+          .int      0x00000040
+          .long    .L10
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000003f
+          .int      0x0000003f
+          .long    .L9
+          .asciiz  ".././src/xhttpd.xc"
+          .int      0x0000003e
+          .int      0x0000003e
           .long    .L8
           .asciiz  ".././src/xhttpd.xc"
           .int      0x0000003d
           .int      0x0000003d
-          .long    .L7
+          .long    .L76
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x0000003c
-          .int      0x0000003c
-          .long    .L66
+          .int      0x0000003b
+          .int      0x0000003b
+          .long    .L4
           .asciiz  ".././src/xhttpd.xc"
           .int      0x0000003a
           .int      0x0000003a
           .long    .L3
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000039
-          .int      0x00000039
+          .int      0x00000038
+          .int      0x00000038
           .long    .L2
           .asciiz  ".././src/xhttpd.xc"
-          .int      0x00000037
-          .int      0x00000037
+          .int      0x00000035
+          .int      0x00000035
           .long    .L1
           .asciiz  ".././src/xhttpd.xc"
           .int      0x00000034
           .int      0x00000034
           .long    .L0
 .cc_bottom xhttpd.function
-.L101:
+.L117:
           .section .dp.data,       "adw", @progbits
 .align 4
           .align    4
