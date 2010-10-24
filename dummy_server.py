@@ -17,6 +17,6 @@ while True:
             break
           else:
             print data
-    except:
-        import pdb; pdb.set_trace()
+    except Exception as e:
+        print 'caught Exception: '  + e
         conn.close()
