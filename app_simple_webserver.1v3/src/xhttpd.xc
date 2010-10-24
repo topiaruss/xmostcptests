@@ -42,6 +42,7 @@ void xhttpd(chanend tcp_svr, port x0ledB)
   }
   */
 #define DELAY  (_CLOCKS_PER_SEC_/2)
+#define PAUSE_A (_CLOCKS_PER_SEC_ * 2)
 #define DATA_LEN 500
 
 	  xtcp_connection_t conn;
@@ -61,18 +62,18 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 while (1){
 	  sendloop = 1;
       tmr :> tt;
-      tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
+      tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 
       xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
 	  //xtcp_bind_remote(tcp_svr, conn, host, rem_port);
 
       tmr :> tt;
-      tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
+      tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 
 	  xtcp_ask_for_event(tcp_svr);
 	  while(sendloop) {
           tmr :> tt;
-          tmr when timerafter(tt + (_CLOCKS_PER_SEC_ * 2)) :> void;        /* wait a bit */
+          tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 	    select
 	      {
 	      case xtcp_event(tcp_svr, conn):
@@ -100,39 +101,35 @@ while (1){
 	                  break;
 	               case XTCP_SENT_DATA:
 	                  printstr("sending...\n");
-	                     tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
-	                x0ledB <: ledOn;  /* toggle the LED */
-	                ledOn = !ledOn;
-	                     xtcp_send(tcp_svr, data, DATA_LEN);
-	                     tmr :> t;   /* save the current timer value */
-	                  //httpd_send(tcp_svr, conn);
+	                  tmr :> t;   /* save the current timer value */
+	                  tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
+	                  x0ledB <: ledOn;  /* toggle the LED */
+	                  ledOn = !ledOn;
+	                  xtcp_send(tcp_svr, data, DATA_LEN);
 	                  break;
 
 	               case XTCP_TIMED_OUT:
 		                  printstr("XTCP_TIMED_OUT\n");
-		                  //httpd_free_state(conn);
 		                  sendloop=0;
 		                  break;
 	               case XTCP_ABORTED:
 		                  printstr("XTCP_ABORTED\n");
-		                  //httpd_free_state(conn);
+		                  xtcp_close(tcp_svr, conn);
 		                  sendloop=0;
 		                  break;
 	               case XTCP_CLOSED:
 	                  printstr("XTCP_CLOSED\n");
-	                  //httpd_free_state(conn);
 	                  break;
 
 	               case XTCP_POLL:
 	               case XTCP_NULL:
+	               default:
 		                  printstr("XTCP_OTHER\n");
 		                  //httpd_free_state(conn);
 		                  break;
-
-
 	            }
-	        xtcp_ask_for_event(tcp_svr);
-	        break;
+	            xtcp_ask_for_event(tcp_svr);
+	            break;
 	      }
 	  }
   } // temp while
