@@ -72,8 +72,8 @@ while (1){
 
 	  xtcp_ask_for_event(tcp_svr);
 	  while(sendloop) {
-          tmr :> tt;
-          tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
+//          tmr :> tt;
+//          tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 	    select
 	      {
 	      case xtcp_event(tcp_svr, conn):
