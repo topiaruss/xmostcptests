@@ -23,6 +23,10 @@
 #include "xtcp_client.h"
 #include "time.h"
 
+void debug(char s[]){
+	printstr(s);
+}
+
 void xhttpd(chanend tcp_svr, port x0ledB)
 {
 	/*
@@ -62,18 +66,16 @@ while (1){ // temp loop
 
       tmr :> tt;
       tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
-//printstr("A\n");
+//debug("A\n");
       xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
-//printstr("B\n");
+//debug("B\n");
 
       packet_index = 0;
-//printstr("AFE\n");
+//debug("AFE\n");
 
 	  xtcp_ask_for_event(tcp_svr);
 	  while(sendloop) {
 		unsigned pin = (packet_index % 10000);
-//printstr("TOS\n");
-
 		for (int i = 0; i < 4; i++){
 		char c = (pin % 10) + '0';
 		data[3-i] = c;
@@ -84,28 +86,27 @@ while (1){ // temp loop
 	      case xtcp_event(tcp_svr, conn):
 	            switch (conn.event) {
 	               case XTCP_NEW_CONNECTION:
-	                  printstr("XTCP_NEW_CONNECTION\n");
+	                  debug("XTCP_NEW_CONNECTION\n");
 	                  xtcp_init_send(tcp_svr, conn);
 	                  break;
 	               case XTCP_RECV_DATA:
-	            	  printstr("XTCP_RECV_DATA\n");
+	            	  debug("XTCP_RECV_DATA\n");
 	                  len = xtcp_recv(tcp_svr, data);
 	                  break;
 
 	               case XTCP_REQUEST_DATA:
-	                  printstr("XTCP_REQUEST_DATA\n");
+	                  debug("XTCP_REQUEST_DATA\n");
 	                  xtcp_send(tcp_svr, data, DATA_LEN);
 	                  break;
 	               case XTCP_RESEND_DATA:
-	                  printstr("XTCP_RESEND_DATA\n");
+	                  debug("XTCP_RESEND_DATA\n");
 	                  xtcp_send(tcp_svr, data, DATA_LEN);
 	                  break;
 	               case XTCP_SENT_DATA:
-	                  printstr("XTCP_SENT_DATA\n");
-	                  tmr :> t;   /* save the current timer value */
-	                  tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
-	                  x0ledB <: ledOn;  /* toggle the LED */
-	                  ledOn = !ledOn;
+	                  debug("XTCP_SENT_DATA\n");
+	                  //tmr :> t;   /* save the current timer value */
+	                  //tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
+	                  x0ledB <: 1;
 	                  if (packet_index == 5){
 	                      xtcp_send(tcp_svr,data, 0);
 	                      xtcp_close(tcp_svr, conn);
@@ -113,27 +114,28 @@ while (1){ // temp loop
 	                  {
 	                      xtcp_send(tcp_svr, data, DATA_LEN);
 	                  }
+	                  x0ledB <: 0;
 	                  break;
 
 	               case XTCP_TIMED_OUT:
-					  printstr("XTCP_TIMED_OUT\n");
+					  debug("XTCP_TIMED_OUT\n");
 					  xtcp_close(tcp_svr, conn);
 //					  sendloop=0;
 					  break;
 	               case XTCP_ABORTED:
-					  printstr("XTCP_ABORTED\n");
+					  debug("XTCP_ABORTED\n");
 					  xtcp_close(tcp_svr, conn);
 					 // sendloop=0;
 					  break;
 	               case XTCP_CLOSED:
-	                  printstr("XTCP_CLOSED\n");
+	                  debug("XTCP_CLOSED\n");
 	                  sendloop=0;
 	                  break;
 
 	               case XTCP_POLL:
 	               case XTCP_NULL:
 	               default:
-					  printstr("XTCP_OTHER\n");
+					  debug("XTCP_OTHER\n");
 					  break;
 	            } //end switch
 	            if (sendloop)

@@ -1,0 +1,27 @@
+Russ Ferriday, Topia Systems, Ltd.
+russf@topia.com
+
+This is a very experimental project for the XMOS XC-2 - my version is 2V0
+
+I'm trying to attain a high send speed for a connection initiated by the XC-2
+to a server. I'm currently at the point where I can send up to about 50
+messages without incident, then something blocks. And if I remove my debug
+prints, I can't even send the first packet.
+
+I'm finding the documentation a bit thin (basically it's a header file, a few
+post of non-functional code on the forum, and what you can extract from the
+firmware sources.
+
+I'd love to have a dialog with anyone who has managed significant send
+performance on the XC-2.
+
+To run it, pull in the entire repos as a new workspace.
+Then you need to configure a tcpip server with 192.168.2.166, and run
+the python dummy_server supplied in the root of the repos. The server listens
+on port 8008, and prints incoming packets.
+
+On my MacBook, I connect to the web via Wifi, and manually configure ethernet, 
+after plugging in the XC-2, to 192.168.2.166.  This keeps me connected for
+research, while the python server run at the terminal prints the traffic.
+
+Pull requests accepted. 
