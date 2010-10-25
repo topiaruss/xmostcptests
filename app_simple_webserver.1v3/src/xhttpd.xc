@@ -66,9 +66,6 @@ while (1){ // temp loop
       xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
 //printstr("B\n");
 
-      tmr :> tt;
-      tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
-
       packet_index = 0;
 //printstr("AFE\n");
 
