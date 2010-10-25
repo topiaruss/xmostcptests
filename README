@@ -20,6 +20,9 @@ Then you need to configure a tcpip server with 192.168.2.166, and run
 the python dummy_server supplied in the root of the repos. The server listens
 on port 8008, and prints incoming packets.
 
+My code runs fine from RAM (no need to flash), though there is a timing issue
+after startup, so flash may differ.
+
 On my MacBook, I connect to the web via Wifi, and manually configure ethernet, 
 after plugging in the XC-2, to 192.168.2.166.  This keeps me connected for
 research, while the python server run at the terminal prints the traffic.
