@@ -56,11 +56,12 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 	  timer tmr;
 	  unsigned t,tt;
 	  unsigned ledOn = 1;
+	  int foo;
 
       x0ledB <: ledOn;  /* toggle the LED */
       ledOn = !ledOn;
 
-while (1){
+while (1){ // temp loop
 	  sendloop = 1;
 
       tmr :> tt;
@@ -109,7 +110,7 @@ while (1){
 	                  x0ledB <: ledOn;  /* toggle the LED */
 	                  ledOn = !ledOn;
 	                  if (packet_index == 10){
-	                      xtcp_send(tcp_svr,data, 0);
+	                      //xtcp_send(tcp_svr,data, 0);
 	                      xtcp_close(tcp_svr, conn);
 		                  sendloop=0;
 	                  } else
@@ -142,6 +143,7 @@ while (1){
 	            packet_index++;
 	            break;
 	      }
+	    foo=1;
 	  }
   } // temp while
 }
