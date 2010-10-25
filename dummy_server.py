@@ -18,5 +18,5 @@ while True:
           else:
             print data
     except Exception as e:
-        print 'caught Exception: '  + e
+        print 'caught Exception: ', e
         conn.close()
