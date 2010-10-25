@@ -126,7 +126,7 @@ while (1){ // temp loop
 	               case XTCP_ABORTED:
 					  printstr("XTCP_ABORTED\n");
 					  xtcp_close(tcp_svr, conn);
-					  sendloop=0;
+					 // sendloop=0;
 					  break;
 	               case XTCP_CLOSED:
 	                  printstr("XTCP_CLOSED\n");
@@ -139,7 +139,8 @@ while (1){ // temp loop
 					  printstr("XTCP_OTHER\n");
 					  break;
 	            } //end switch
-	            xtcp_ask_for_event(tcp_svr);
+	            if (sendloop)
+	                xtcp_ask_for_event(tcp_svr);
 	            packet_index++;
 	            break;
 	      }
