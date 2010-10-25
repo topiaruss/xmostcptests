@@ -48,8 +48,9 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 	  xtcp_connection_t conn;
 	  xtcp_appstate_t state;
 	  xtcp_ipaddr_t host = {192,168,2,166};
-	  unsigned char data[XTCP_CLIENT_BUF_SIZE] = {'h', 'e', 'l', 'l', 'o'};
+	  unsigned char data[XTCP_CLIENT_BUF_SIZE] = {'x', 'x', 'x', 'x', '-', 'h', 'e', 'l', 'l', 'o'};
 	  int len;
+	  unsigned packet_index;
 	  int rem_port = 8008;
 	  int sendloop = 1;
 	  timer tmr;
@@ -61,6 +62,7 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 
 while (1){
 	  sendloop = 1;
+
       tmr :> tt;
       tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 
@@ -70,42 +72,50 @@ while (1){
       tmr :> tt;
       tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 
+      packet_index = 0;
 	  xtcp_ask_for_event(tcp_svr);
 	  while(sendloop) {
-//          tmr :> tt;
-//          tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
+		unsigned pin = (packet_index % 10000);
+		for (int i = 0; i < 4; i++){
+		char c = (pin % 10) + '0';
+		data[3-i] = c;
+		pin = pin / 10;
+		}
 	    select
 	      {
 	      case xtcp_event(tcp_svr, conn):
 	            switch (conn.event) {
 	               case XTCP_NEW_CONNECTION:
 	                  printstr("XTCP_NEW_CONNECTION\n");
-	                  //httpd_init_state(tcp_svr, conn);
 	                  xtcp_init_send(tcp_svr, conn);
 	                  break;
 	               case XTCP_RECV_DATA:
 	                  printstr("XTCP_RECV_DATA\n");
-	                  //httpd_recv(tcp_svr, conn);
-	                 len = xtcp_recv(tcp_svr, data);
+	                  len = xtcp_recv(tcp_svr, data);
 	                  break;
 
 	               case XTCP_REQUEST_DATA:
 	                  printstr("XTCP_REQUEST_DATA\n");
 	                  xtcp_send(tcp_svr, data, DATA_LEN);
-	                  tmr :> t;   /* save the current timer value */
 	                  break;
 	               case XTCP_RESEND_DATA:
 	                  printstr("XTCP_RESEND_DATA\n");
 	                  xtcp_send(tcp_svr, data, DATA_LEN);
-	                  tmr :> t;   /* save the current timer value */
 	                  break;
 	               case XTCP_SENT_DATA:
-	                  printstr("sending...\n");
+	                  printstr("XTCP_SENT_DATA\n");
 	                  tmr :> t;   /* save the current timer value */
 	                  tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
 	                  x0ledB <: ledOn;  /* toggle the LED */
 	                  ledOn = !ledOn;
-	                  xtcp_send(tcp_svr, data, DATA_LEN);
+	                  if (packet_index == 10){
+	                      xtcp_send(tcp_svr,data, 0);
+	                      xtcp_close(tcp_svr, conn);
+		                  sendloop=0;
+	                  } else
+	                  {
+	                      xtcp_send(tcp_svr, data, DATA_LEN);
+	                  }
 	                  break;
 
 	               case XTCP_TIMED_OUT:
@@ -127,8 +137,9 @@ while (1){
 		                  printstr("XTCP_OTHER\n");
 		                  //httpd_free_state(conn);
 		                  break;
-	            }
+	            } //end switch
 	            xtcp_ask_for_event(tcp_svr);
+	            packet_index++;
 	            break;
 	      }
 	  }
