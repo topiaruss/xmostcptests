@@ -46,7 +46,6 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 #define DATA_LEN 500
 
 	  xtcp_connection_t conn;
-	  xtcp_appstate_t state;
 	  xtcp_ipaddr_t host = {192,168,2,166};
 	  unsigned char data[XTCP_CLIENT_BUF_SIZE] = {'x', 'x', 'x', 'x', '-', 'h', 'e', 'l', 'l', 'o'};
 	  int len;
@@ -58,25 +57,26 @@ void xhttpd(chanend tcp_svr, port x0ledB)
 	  unsigned ledOn = 1;
 	  int foo;
 
-      x0ledB <: ledOn;  /* toggle the LED */
-      ledOn = !ledOn;
-
 while (1){ // temp loop
 	  sendloop = 1;
 
       tmr :> tt;
       tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
-
+//printstr("A\n");
       xtcp_connect(tcp_svr, rem_port, host, XTCP_PROTOCOL_TCP);
-	  //xtcp_bind_remote(tcp_svr, conn, host, rem_port);
+//printstr("B\n");
 
       tmr :> tt;
       tmr when timerafter(tt + PAUSE_A) :> void;        /* wait a bit */
 
       packet_index = 0;
+//printstr("AFE\n");
+
 	  xtcp_ask_for_event(tcp_svr);
 	  while(sendloop) {
 		unsigned pin = (packet_index % 10000);
+//printstr("TOS\n");
+
 		for (int i = 0; i < 4; i++){
 		char c = (pin % 10) + '0';
 		data[3-i] = c;
@@ -91,7 +91,7 @@ while (1){ // temp loop
 	                  xtcp_init_send(tcp_svr, conn);
 	                  break;
 	               case XTCP_RECV_DATA:
-	                  printstr("XTCP_RECV_DATA\n");
+	            	  printstr("XTCP_RECV_DATA\n");
 	                  len = xtcp_recv(tcp_svr, data);
 	                  break;
 
@@ -109,10 +109,9 @@ while (1){ // temp loop
 	                  tmr when timerafter(t + DELAY) :> void;        /* wait till the send period is over */
 	                  x0ledB <: ledOn;  /* toggle the LED */
 	                  ledOn = !ledOn;
-	                  if (packet_index == 10){
-	                      //xtcp_send(tcp_svr,data, 0);
+	                  if (packet_index == 5){
+	                      xtcp_send(tcp_svr,data, 0);
 	                      xtcp_close(tcp_svr, conn);
-		                  sendloop=0;
 	                  } else
 	                  {
 	                      xtcp_send(tcp_svr, data, DATA_LEN);
@@ -120,24 +119,25 @@ while (1){ // temp loop
 	                  break;
 
 	               case XTCP_TIMED_OUT:
-		                  printstr("XTCP_TIMED_OUT\n");
-		                  sendloop=0;
-		                  break;
+					  printstr("XTCP_TIMED_OUT\n");
+					  xtcp_close(tcp_svr, conn);
+//					  sendloop=0;
+					  break;
 	               case XTCP_ABORTED:
-		                  printstr("XTCP_ABORTED\n");
-		                  xtcp_close(tcp_svr, conn);
-		                  sendloop=0;
-		                  break;
+					  printstr("XTCP_ABORTED\n");
+					  xtcp_close(tcp_svr, conn);
+					  sendloop=0;
+					  break;
 	               case XTCP_CLOSED:
 	                  printstr("XTCP_CLOSED\n");
+	                  sendloop=0;
 	                  break;
 
 	               case XTCP_POLL:
 	               case XTCP_NULL:
 	               default:
-		                  printstr("XTCP_OTHER\n");
-		                  //httpd_free_state(conn);
-		                  break;
+					  printstr("XTCP_OTHER\n");
+					  break;
 	            } //end switch
 	            xtcp_ask_for_event(tcp_svr);
 	            packet_index++;
