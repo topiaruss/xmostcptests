@@ -1,10 +1,12 @@
 Russ Ferriday, Topia Systems, Ltd.
 russf@topia.com
 
-This is a very experimental project for the XMOS XC-2 - my version is 2V0
+This is a very experimental project for the XMOS XC-2 version 2V0
 
-I'm trying to attain a high send speed for a connection initiated by the XC-2
-to a server. I'm currently at the point where I can send up to about 50
+I'm trying to attain a high streaming speed for a connection initiated by the 
+XC-2 to a server. I have a long road ahead.
+
+I'm currently at the point where I can send up to about 50 * 4kB 
 messages without incident, then something blocks. And if I remove my debug
 prints, I can't even send the first packet.
 
